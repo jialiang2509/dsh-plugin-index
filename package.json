@@ -1,0 +1,16 @@
+{
+  "name": "dsh-plugin-index",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A format-1 plugin market index for DeepSeek Harness, generated from npm registry metadata",
+  "scripts": {
+    "generate": "node generate.mjs",
+    "check": "node check.mjs"
+  },
+  "devDependencies": {
+    "@deepseek-ai/dsh-plugin-market-index": "0.2.1-alpha.4",
+    "semver": "^7.8.5"
+  },
+  "license": "MIT"
+}

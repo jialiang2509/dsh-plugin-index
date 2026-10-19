@@ -1,0 +1,51 @@
+name: Refresh index
+
+on:
+  schedule:
+    # Daily at 03:17 UTC — off the hour to avoid the busiest registry window.
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install the index validator
+        run: npm install --no-audit --no-fund
+
+      - name: Rebuild the index
+        env:
+          TIER1: '1000'
+          MAX_TOTAL: '9000'
+          MAX_VERSIONS: '25'
+          CONCURRENCY: '12'
+        run: npm run generate
+
+      - name: Validate the result
+        run: npm run check
+
+      - name: Commit when the registry moved
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git diff --quiet -- market.json; then
+            echo 'index unchanged'
+            exit 0
+          fi
+          git add market.json
+          git commit -m 'chore: refresh plugin index'
+          git push
