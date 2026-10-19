@@ -3,13 +3,16 @@
 A [format-1](https://github.com/deepseek-ai/deepseek-harness) plugin market index
 for DeepSeek Harness, generated from npm registry metadata.
 
-Add it in DSH: **Plugins → Discover → Add index source**, then paste:
+Add it in DSH: **Plugins → Discover → Add index source**, then paste one of:
 
 ```
+https://jialiang2509.github.io/dsh-plugin-index/market.json
 https://raw.githubusercontent.com/jialiang2509/dsh-plugin-index/main/market.json
 ```
 
-(or the Pages URL, once enabled: `https://jialiang2509.github.io/dsh-plugin-index/market.json`)
+The Pages URL is served by GitHub's CDN; the `raw.githubusercontent.com` one
+bypasses the Pages build and updates the moment a commit lands. Both point at
+the same document.
 
 ## What it indexes
 
