@@ -49,6 +49,24 @@ This matters, because most community plugins never declare it.
 and says nothing about the dsh runtime. Peer ranges containing `||` are skipped,
 because mixing a union into an AND expression changes its meaning.
 
+## Chinese descriptions
+
+`description` is emitted as `{ "en": <original>, "zh": <machine translation> }`.
+DSH renders whichever entry matches the UI language, so a Chinese UI shows 中文
+and an English one shows the original. **The English text is kept verbatim and is
+the only authoritative wording** — translations are a reading aid, and anything
+technical (version constraints, option meanings, limits) must be checked against
+`en`.
+
+- Only descriptions containing no CJK characters are translated. Roughly 1,600
+  packages already publish Chinese descriptions and are left untouched.
+- `translations.json` caches each translation by the SHA-256 of its source text,
+  so a refresh pays only for text that is new or actually changed.
+- `translate.mjs` needs `DEEPSEEK_API_KEY`. Without it the index still validates;
+  only the localized text is missing, and CI skips that step.
+- Useful side effect: market search matches every language of a description, so
+  Chinese keywords now find plugins described only in English.
+
 ## Regenerating
 
 ```bash
